@@ -44,6 +44,27 @@ storiesOf('Button', module).add('default view', () => (
 ));
 ```
 
+##### Example for Svelte:
+```js
+import { storiesOf } from '@storybook/svelte';
+import { action, configureActions } from '@storybook/addon-actions';
+
+import Button from './Button.svelte';
+
+storiesOf('Button', module)
+.add('default view', () => ({
+  Component: Button,
+  on: {
+    clicked: action('button-clicked'),
+  }
+});
+```
+
+>_**Please Note:** Events in Svelte don't actually correspond to DOM events. Only events fired from the component can be bound to from storybook._
+>_From the example above, `<Button>` has to `fire('clicked')` at some point._
+
+-------
+
 ## Multiple actions
 
 If your story requires multiple actions, it may be convenient to use `actions` to create many at once:
@@ -90,11 +111,11 @@ storiesOf('Button', module).add('default view', () => (
 Arguments which are passed to the action call will have to be serialized while be "transfered"
 over the channel.
 
-This is not very optimal and can cause lag when large objects are being logged, for this reason it is possible 
+This is not very optimal and can cause lag when large objects are being logged, for this reason it is possible
 to configure a maximum depth.
 
 The action logger, by default, will log all actions fired during the lifetime of the story. After a while
-this can make the storybook laggy. As a workaround, you can configure an upper limit to how many actions should 
+this can make the storybook laggy. As a workaround, you can configure an upper limit to how many actions should
 be logged.
 
 To apply the configuration globally use the `configureActions` function in your `config.js` file.
